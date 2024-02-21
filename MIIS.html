@@ -1,0 +1,342 @@
+<style>
+    body {
+        background-color: black;
+        color: #0A0;
+        font-family: monospace;
+    }
+    h1 {
+        text-align: center;
+    }
+    h4 {
+        text-align: center;
+    }
+    p {
+        text-align: left;
+    }
+    code {
+        display: block;
+        text-align: left;
+        background-color: #AAA;
+        color: #A00;
+    }
+    table {
+        border-collapse: collapse;
+        width: 55%;
+    }
+    td, th {
+        border: 1px solid #0B0;
+        text-align: left;
+        padding: 4px;
+    }
+</style>
+
+<h1>the Miniature Intermediate Instruction Standard</h1>
+<h4>written by nonmasc-lilly</h4>
+<h5>Preamble</h5>
+<p>
+    The Miniature Intermediate Instruction Standard (MIIS) is a
+    small instruction set aiming to reduce the work in producing
+    machine code by minimizing the complexity in ordering and
+    function of instructions. Another benefit of MIIS is that it
+    is fully portable, meaning that MIIS can easily be converted
+    to any other language (given its small scope).
+</p>
+<h5>Definition</h5>
+<p>
+    MIIS contains four registers (A, B, C, and I) majority of work
+    happens within these registers. They are all of native width
+    (8 bytes on 64 bit machines, 4 on 32 bit, etc.). There are
+    also two busses, the input bus and the output bus. The input
+    bus may feed values into the program, the output bus will send
+    values out of the program. The I register is only used as the
+    instruction pointer, and is only manipulated by jump commands
+    Implementations of MIIS may optimize output code in any way
+    they like, as long as behaviour doesnt change.
+    <br/>
+    <h6>file format.</h6>
+    MIIS files (.mis is the reccomended file extension) are
+    comprised of segments, each segment begins with 0x2024, a 64
+    bit number determining size, and an 8 bit type. Next follows
+    *exactly* as many bytes as was determined in the 64 bit size.
+    These bytes are then interpretted based on the control byte:
+    <br/>
+    crb = 0 -&gt; the segment is interpretted as MIIS code<br/>
+    crb = 1 -&gt; the segment is interpretted as raw data<br/>
+    crb = 2 -&gt; the segment is interpretted as being assembler
+    flags<br/>
+    What is following is a table of all the MIIS instruction codes
+    <br/>
+    NOTE: i refers to a constant of width equal to native.<br/>
+</p>
+<h5>Instruction Set</h5>
+<table>
+    <tr>
+        <th>OPCODE</th>
+        <th>MNEMONIC</th>
+        <th>DESCRIPTION</th>
+    </tr>
+    <tr>
+        <td>00h</td>
+        <td>NOP</td>
+        <td>do nothing</td>
+    </tr>
+    <tr>
+        <td>01h i</td>
+        <td>SET A,i</td>
+        <td>Puts the value i in A</td>
+    </tr>
+    <tr>
+        <td>02h</td>
+        <td>SET A, B</td>
+        <td>Puts the value of B in A</td>
+    </tr>
+    <tr>
+        <td>03h</td>
+        <td>SET A, C</td>
+        <td>Puts the value of C in A</td>
+    </tr>
+    <tr>
+        <td>04h i</td>
+        <td>SET B,i</td>
+        <td>Puts the value i in B</td>
+    </tr>
+    <tr>
+        <td>05h</td>
+        <td>SET B, A</td>
+        <td>Puts the value of A in B</td>
+    </tr>
+    <tr>
+        <td>06h</td>
+        <td>SET B, C</td>
+        <td>Puts the value of C in B</td>
+    </tr>
+    <tr>
+        <td>07h i</td>
+        <td>SET C,i</td>
+        <td>Puts the value i in C</td>
+    </tr>
+    <tr>
+        <td>08h</td>
+        <td>SET C, A</td>
+        <td>Puts the value of A in C</td>
+    </tr>
+    <tr>
+        <td>09h</td>
+        <td>SET C, B</td>
+        <td>Puts the value of B in C</td>
+    </tr>
+    <tr>
+        <td>0Ah</td>
+        <td>AND A, B</td>
+        <td>Logical ands A and B and stores the value in A</td>
+    </tr>
+    <tr>
+        <td>0Bh</td>
+        <td>AND A, C</td>
+        <td>Logical ands A and C and stores the value in A</td>
+    </tr>
+    <tr>
+        <td>0Ch</td>
+        <td>AND B, A</td>
+        <td>Logical ands B and A and stores the value in B</td>
+    </tr>
+    <tr>
+        <td>0Dh</td>
+        <td>AND B, C</td>
+        <td>Logical ands B and C and stores the value in B</td>
+    </tr>
+    <tr>
+        <td>0Eh</td>
+        <td>AND C, A</td>
+        <td>Logical ands C and A and stores the value in C</td>
+    </tr>
+    <tr>
+        <td>0Fh</td>
+        <td>AND C, B</td>
+        <td>Logical ands C and B and stores the value in C</td>
+    </tr>
+    <tr>
+        <td>10h</td>
+        <td>OR A, B</td>
+        <td>Logical ors A and B and stores the value in A</td>
+    </tr>
+    <tr>
+        <td>11h</td>
+        <td>OR A, C</td>
+        <td>Logical ors A and C and stores the value in A</td>
+    </tr>
+    <tr>
+        <td>12h</td>
+        <td>OR B, A</td>
+        <td>Logical ors B and A and stores the value in B</td>
+    </tr>
+    <tr>
+        <td>13h</td>
+        <td>OR B, C</td>
+        <td>Logical ors B and C and stores the value in B</td>
+    </tr>
+    <tr>
+        <td>14h</td>
+        <td>OR C, A</td>
+        <td>Logical ors C and A and stores the value in C</td>
+    </tr>
+    <tr>
+        <td>15h</td>
+        <td>OR C, B</td>
+        <td>Logical ors C and B and stores the value in C</td>
+    </tr>
+    <tr>
+        <td>16h</td>
+        <td>NOT A</td>
+        <td>Logical nots A and stores the value in A</td>
+    </tr>
+    <tr>
+        <td>17h</td>
+        <td>NOT B</td>
+        <td>Logical nots B and stores the value in B</td>
+    </tr>
+    <tr>
+        <td>18h</td>
+        <td>NOT C</td>
+        <td>Logical nots C and stores the value in C</td>
+    </tr>
+    <tr>
+        <td>19h</td>
+        <td>ADD A, B</td>
+        <td>Adds A and B and stores the value in A</td>
+    </tr>
+    <tr>
+        <td>1Ah</td>
+        <td>ADD A, C</td>
+        <td>Adds A and C and stores the value in A</td>
+    </tr>
+    <tr>
+        <td>1Bh</td>
+        <td>ADD B, A</td>
+        <td>Adds B and A and stores the value in B</td>
+    </tr>
+    <tr>
+        <td>1Ch</td>
+        <td>AND B, C</td>
+        <td>Adds B and C and stores the value in B</td>
+    </tr>
+    <tr>
+        <td>1Dh</td>
+        <td>ADD C, A</td>
+        <td>Adds C and A and stores the value in C</td>
+    </tr>
+    <tr>
+        <td>1Eh</td>
+        <td>ADD C, B</td>
+        <td>Adds C and B and stores the value in C</td>
+    </tr>
+    <tr>
+        <td>1Fh</td>
+        <td>SUB A, B</td>
+        <td>Subtracts A and B and stores the value in A</td>
+    </tr>
+    <tr>
+        <td>20h</td>
+        <td>SUB A, C</td>
+        <td>Subtracts A and C and stores the value in A</td>
+    </tr>
+    <tr>
+        <td>21h</td>
+        <td>SUB B, A</td>
+        <td>Subtracts B and A and stores the value in B</td>
+    </tr>
+    <tr>
+        <td>22h</td>
+        <td>SUB B, C</td>
+        <td>Subtracts B and C and stores the value in B</td>
+    </tr>
+    <tr>
+        <td>23h</td>
+        <td>SUB C, A</td>
+        <td>Subtracts C and A and stores the value in C</td>
+    </tr>
+    <tr>
+        <td>24h</td>
+        <td>SUB C, B</td>
+        <td>Subtracts C and B and stores the value in C</td>
+    </tr>
+    <tr>
+        <td>25h</td>
+        <td>PUSH A</td>
+        <td>Push A to the stack</td>
+    </tr>
+    <tr>
+        <td>26h</td>
+        <td>PUSH B</td>
+        <td>Push B to the stack</td>
+    </tr>
+    <tr>
+        <td>27h</td>
+        <td>PUSH C</td>
+        <td>Push C to the stack</td>
+    </tr>
+    <tr>
+        <td>28h</td>
+        <td>POP A</td>
+        <td>Pops a value from the stack and stores it in A</td>
+    </tr>
+    <tr>
+        <td>29h</td>
+        <td>POP B</td>
+        <td>Pops a value from the stack and stores it in B</td>
+    </tr>
+    <tr>
+        <td>2Ah</td>
+        <td>POP C</td>
+        <td>Pops a value from the stack and stores it in C</td>
+    </tr>
+    <tr>
+        <td>2Bh</td>
+        <td>IN</td>
+        <td>Sets the value of A to whatever is in the Input BUS</td>
+    </tr>
+    <tr>
+        <td>2Ch</td>
+        <td>CIN</td>
+        <td>Clears the value of the Input BUS to zero</td>
+    </tr>
+    <tr>
+        <td>2Dh</td>
+        <td>OUT</td>
+        <td>Sets the value of the Out BUS to the value of A</td>
+    </tr>
+    <tr>
+        <td>2Eh</td>
+        <td>COUT</td>
+        <td>Sets the value of the Out BUS to zero</td>
+    </tr>
+    <tr>
+        <td>2Fh</td>
+        <td>JMP</td>
+        <td>adds C to I</td>
+    </tr>
+    <tr>
+        <td>30h</td>
+        <td>JZ</td>
+        <td>adds C to I when A is zero</td>
+    </tr>
+    <tr>
+        <td>31h</td>
+        <td>LD</td>
+        <td>stores value of address in C at A</td>
+    </tr>
+    <tr>
+        <td>32h</td>
+        <td>ST</td>
+        <td>stores value of A at address in C</td>
+    </tr>
+
+</table>
+
+
+
+
+
+
+
+
